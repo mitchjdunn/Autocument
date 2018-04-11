@@ -3,6 +3,7 @@ import re
 import LatexGenerator
 class Parser():
 
+	propertyRegex = r'(public |private |protected )(static )?([a-zA-Z<>\[\]]* )([a-zA-Z][a-zA-Z0-9]*)([\s]*?=|;)'
 	classRegex = r'(public |private |protected )?(class )([a-zA-Z]*)'
 	methodRegex = r'(public |private |protected )(static )?([a-zA-Z<>\[\]]* |void )?([a-zA-Z]*\(([a-zA-Z\[\]<>]{1,} [a-zA-z]{1,}( ?, ?)?)*\))'
 	classes = list()
@@ -28,6 +29,11 @@ class Parser():
 					print match.group(), " METHOD"
 					self.newMethod(match.group())
 					continue
+				match = re.search(Self.propertyRegex, line)
+				if match is not None:
+					print match.group(), " PROPERTY"
+					self.newProperty(match.group())
+					continue
 		if self.currentClass is not None:
 			self.classes.append(self.currentClass)
 
@@ -39,6 +45,17 @@ class Parser():
 		self.currentClass.setDescription("TODO make class description")
 		print declaration.split(" ")[-1]
 		self.currentClass.setName(declaration.split(" ")[-1])
+
+	def newProperty(self, declaration):
+		if self.currentClass is None:
+			print "ERROR found property without a class"
+			return
+		dec = declaration.split(" ")
+		if dec[1] == "static":
+			currentClass.addProperty(classData.Property().newProperty(dec[0], dec[2], dec[3], declaration))
+		else:
+			currentClass.addProperty(classData.Property().newProperty(dec[0], dec[1], dec[2], declaration))
+
 
 	def newMethod(self, declaration):
 		if self.currentClass is None:

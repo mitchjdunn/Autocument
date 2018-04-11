@@ -1,6 +1,7 @@
 class Class():
 
 	def __init__(self):
+		self.properties = list()
 		self.constructors = list()
 		self.methods = list()
 		self.declaration = ""
@@ -13,6 +14,9 @@ class Class():
 	def addConstructor(self, constructor):
 		self.constructors.append(constructor)
 
+	def addProperty(self, property):
+		self.properties.append(property)
+
 	def setDeclaration(self, declaration):
 		self.declaration = declaration
 
@@ -21,6 +25,20 @@ class Class():
 
 	def setDescription(self, description):
 		self.description = description
+
+class Property():
+	def __init__(self):
+		self.declaration = ""
+		self.name = ""
+		self.description = ""
+		self.type = ""
+		self.scope = ""
+
+	def newProperty(self, scope, type1, name, declaration):
+		self.declaration = declaration
+		self.scope = scope
+		self.type = type1
+		self.name = name
 
 
 class Method():
